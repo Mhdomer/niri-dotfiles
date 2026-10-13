@@ -12,7 +12,7 @@ source ~/REPOS/powerlevel10k/powerlevel10k.zsh-theme
 # ========================================
 # PATH tweaks
 # ========================================
-export PATH="$PATH:/home/kira/.spicetify"
+export PATH="$PATH:$HOME/.spicetify"
 export PATH="$PATH:~/.spicetify"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
@@ -98,8 +98,8 @@ alias cat='bat'
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-export PATH="/home/kira/.config/herd-lite/bin:$PATH"
-export PHP_INI_SCAN_DIR="/home/kira/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
+export PATH="$HOME/.config/herd-lite/bin:$PATH"
+export PHP_INI_SCAN_DIR="$HOME/.config/herd-lite/bin:$PHP_INI_SCAN_DIR"
 
 # NPM global bin (added by Qwen Code installer)
 export PATH="$HOME/.npm-global/bin:$PATH"

@@ -1,0 +1,228 @@
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/core/generation.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/core/generation.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/core/generation.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/core/generation.cpp	2026-10-13 04:35:05.051041595 +0300
+@@ -15,6 +15,8 @@
+ #include <qobject.h>
+ #include <qqmlcontext.h>
+ #include <qqmlengine.h>
++#include <qqmlcomponent.h>
++#include <QtQml/private/qqmlmetatype_p.h>
+ #include <qqmlerror.h>
+ #include <qqmlincubator.h>
+ #include <qquickwindow.h>
+@@ -50,6 +52,17 @@
+ 	this->engine->addUrlInterceptor(&this->urlInterceptor);
+ 	this->engine->addImportPath("qs:@/");
+ 
++	{
++		QQmlComponent preload(this->engine);
++		preload.setData("import QtQuick; QtObject {}", QUrl());
++		preload.create();
++		for (const auto& type : QQmlMetaType::qmlAllTypes()) {
++			if (type.elementName() == "Color" && type.module() == "QtQuick") {
++				QQmlMetaType::unregisterType(type.index());
++			}
++		}
++	}
++
+ 	this->engine->setNetworkAccessManagerFactory(&this->interceptNetFactory);
+ 	this->incubationController.initLoop();
+ 	this->engine->setIncubationController(&this->incubationController);
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/core/singleton.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/core/singleton.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/core/singleton.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/core/singleton.cpp	2026-10-13 04:35:20.526165115 +0300
+@@ -1,5 +1,5 @@
+ #include "singleton.hpp"
+-
++#include <qfileinfo.h>
+ #include <qhash.h>
+ #include <qlogging.h>
+ #include <qobject.h>
+@@ -34,6 +34,10 @@
+ 	}
+ 
+ 	generation->singletonRegistry.registerSingleton(url, this);
++	auto baseName = QFileInfo(url.path()).baseName();
++	if (!baseName.isEmpty() && generation->engine != nullptr && generation->engine->rootContext() != nullptr) {
++		generation->engine->rootContext()->setContextProperty(baseName, this);
++	}
+ 	this->ReloadPropagator::componentComplete();
+ }
+ 
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/connection.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/connection.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/connection.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/connection.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -145,3 +145,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_connection.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/core.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/core.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/core.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/core.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -167,3 +167,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_core.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/defaults.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/defaults.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/defaults.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/defaults.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -355,3 +355,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_defaults.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/device.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/device.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/device.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/device.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -237,3 +237,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_device.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/link.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/link.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/link.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/link.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -185,3 +185,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_link.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/metadata.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/metadata.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/metadata.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/metadata.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -75,3 +75,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_metadata.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/node.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/node.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/node.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/node.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -613,3 +613,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_node.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/peak.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/peak.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/peak.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/peak.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -407,3 +407,5 @@
+ } // namespace qs::service::pipewire
+ 
+ #pragma GCC diagnostic pop
++
++#include "moc_peak.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/qml.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/qml.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/qml.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/qml.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -477,3 +477,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_qml.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/registry.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/registry.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/registry.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/registry.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -281,3 +281,5 @@
+ }
+ 
+ } // namespace qs::service::pipewire
++
++#include "moc_registry.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/spectrum.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/spectrum.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/services/pipewire/spectrum.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/services/pipewire/spectrum.cpp	2026-10-13 04:20:52.958240272 +0300
+@@ -712,3 +712,5 @@
+ } // namespace qs::service::pipewire
+ 
+ #pragma GCC diagnostic pop
++
++#include "moc_spectrum.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/hyprland_toplevel.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/hyprland_toplevel.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/hyprland_toplevel.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/hyprland_toplevel.cpp	2026-10-13 04:19:06.714392243 +0300
+@@ -8,6 +8,7 @@
+ 
+ #include "../../toplevel_management/qml.hpp"
+ #include "connection.hpp"
++#include "monitor.hpp"
+ #include "toplevel_mapping.hpp"
+ #include "workspace.hpp"
+ 
+@@ -159,3 +160,5 @@
+ 	}
+ }
+ } // namespace qs::hyprland::ipc
++
++#include "moc_hyprland_toplevel.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/monitor.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/monitor.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/monitor.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/monitor.cpp	2026-10-13 04:18:55.900305927 +0300
+@@ -7,6 +7,7 @@
+ #include <qtmetamacros.h>
+ #include <qtypes.h>
+ 
++#include "hyprland_toplevel.hpp"
+ #include "workspace.hpp"
+ 
+ namespace qs::hyprland::ipc {
+@@ -88,3 +89,5 @@
+ void HyprlandMonitor::onActiveWorkspaceDestroyed() { this->bActiveWorkspace = nullptr; }
+ 
+ } // namespace qs::hyprland::ipc
++
++#include "moc_monitor.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/monitor.hpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/monitor.hpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/monitor.hpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/monitor.hpp	2026-10-13 04:12:58.988457090 +0300
+@@ -100,3 +100,5 @@
+ };
+ 
+ } // namespace qs::hyprland::ipc
++
++#include "workspace.hpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/workspace.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/workspace.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/workspace.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/wayland/hyprland/ipc/workspace.cpp	2026-10-13 04:18:46.496230864 +0300
+@@ -9,6 +9,7 @@
+ #include <qtypes.h>
+ 
+ #include "connection.hpp"
++#include "hyprland_toplevel.hpp"
+ #include "monitor.hpp"
+ 
+ namespace qs::hyprland::ipc {
+@@ -155,3 +156,5 @@
+ }
+ 
+ } // namespace qs::hyprland::ipc
++
++#include "moc_workspace.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/x11/i3/ipc/monitor.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/x11/i3/ipc/monitor.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/x11/i3/ipc/monitor.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/x11/i3/ipc/monitor.cpp	2026-10-13 04:18:20.751025368 +0300
+@@ -81,3 +81,5 @@
+ void I3Monitor::onActiveWorkspaceDestroyed() { this->bActiveWorkspace = nullptr; }
+ 
+ } // namespace qs::i3::ipc
++
++#include "moc_monitor.cpp"
+diff -ruN -x build /tmp/orig/noctalia-qs-0.0.12/src/x11/i3/ipc/workspace.cpp /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/x11/i3/ipc/workspace.cpp
+--- /tmp/orig/noctalia-qs-0.0.12/src/x11/i3/ipc/workspace.cpp	2026-04-02 16:12:30.000000000 +0300
++++ /tmp/noctalia-qs-build/src/noctalia-qs-0.0.12/src/x11/i3/ipc/workspace.cpp	2026-10-13 04:18:14.763977580 +0300
+@@ -77,3 +77,5 @@
+ }
+ 
+ } // namespace qs::i3::ipc
++
++#include "moc_workspace.cpp"

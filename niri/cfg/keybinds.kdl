@@ -11,7 +11,7 @@ binds {
     // ─── Applications ───
     Mod+Return                         hotkey-overlay-title="Open Terminal: Kitty" { spawn "kitty"; }
     Mod+R                              hotkey-overlay-title="Open App Launcher: noctalia launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
-    Mod+B                              hotkey-overlay-title="Open Browser: firefox" { spawn "helium-browser"; }
+    Mod+B                              hotkey-overlay-title="Open Browser" { spawn-sh "command -v helium-browser >/dev/null && exec helium-browser || exec firefox"; }
     Mod+L                              hotkey-overlay-title="Lock Screen: noctalia lock" { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
     Mod+Shift+Q                        hotkey-overlay-title="Session Menu: noctalia sessionMenu" { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
     Mod+V                              hotkey-overlay-title="Toggle Clipper: noctalia clipper" { spawn-sh "qs -c noctalia-shell ipc call plugin:clipper toggle"; }
@@ -117,14 +117,18 @@ binds {
     Mod+Shift+Minus                     { set-window-height "-10%"; }
     Mod+Shift+Equal                     { set-window-height "+10%"; }
 
-    // ─── Modes ───
+    // ─── Modes & Tabbed Display ───
     Mod+T                               { toggle-window-floating; }
-    Mod+Shift+F                               { fullscreen-window; }
-    // Mod+W                               { toggle-column-tabbed-display; }
-    Mod+Tab repeat=false { toggle-overview; }
+    Mod+Shift+F                         { fullscreen-window; }
+    Mod+Shift+T                         { toggle-column-tabbed-display; }
+    Mod+BracketLeft                     { consume-or-expel-window-left; }
+    Mod+BracketRight                    { consume-or-expel-window-right; }
+    Mod+Tab repeat=false                { toggle-overview; }
 
     // ─── Screenshots ───
-    Print { screenshot; }
+    Print                               { screenshot; }
+    Mod+Print                           { screenshot-screen; }
+    Mod+Shift+S                         { screenshot; }
 
     // ─── Emergency Escape Key ───
     // Use this when a fullscreen app blocks your keybinds.
