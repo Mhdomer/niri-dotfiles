@@ -75,3 +75,12 @@ Keep machine-specific or private values in files that are **not** committed.
 
 - Review configs before pushing this repo public.
 - Avoid committing API keys/tokens.
+
+## Credits & Acknowledgements
+
+- **Original Base**: Built on top of [niri-dotfiles](https://github.com/robaa12/niri-dotfiles) by **Robaa** ([@robaa12](https://github.com/robaa12)). Big shoutout to Robaa for the solid Niri foundations and aesthetic setup!
+- **Custom CachyOS Fixes & Additions**:
+  - Qt 6.12 compatibility patch for `noctalia-qs` (fixes broken theme colors and missing top bar)
+  - Breeze Dark color scheme fix for Dolphin file manager
+  - Kitty terminal clipboard shortcuts (Ctrl+V, Ctrl+Shift+V, right-click paste)
+  - Zsh with Starship prompt, vi-mode integration, and autosuggestion bindings
