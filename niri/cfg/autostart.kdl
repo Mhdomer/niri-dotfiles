@@ -1,6 +1,6 @@
 // ────────────── Startup Applications ──────────────
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Miscellaneous#spawn-sh-at-startup
-    spawn-sh-at-startup "qs -c noctalia-shell"
+    spawn-sh-at-startup "export PATH=\"$HOME/.local/bin:$PATH\"; qs -c noctalia-shell"
     spawn-sh-at-startup "xwayland-satellite"
     spawn-sh-at-startup "wl-paste --watch ~/.local/bin/cliphist store"
     spawn-sh-at-startup "wl-paste --type image --watch ~/.local/bin/cliphist store"

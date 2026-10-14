@@ -110,7 +110,8 @@ binds {
     Mod+CTRL+F                          { expand-column-to-available-width; }
     Mod+D { switch-preset-column-width; }
     Mod+F {maximize-column;}
-    // Mod+C                               { center-column; }
+    Mod+Z                               { center-column; }
+    Mod+Shift+C                         { center-column; }
     Mod+CTRL+C                          { center-visible-columns; }
     Mod+Minus                           { set-column-width "-10%"; }
     Mod+Equal                           { set-column-width "+10%"; }
@@ -128,7 +129,7 @@ binds {
     // ─── Screenshots ───
     Print                               { screenshot; }
     Mod+Print                           { screenshot-screen; }
-    Mod+Shift+S                         { screenshot; }
+    Mod+Shift+S                         hotkey-overlay-title="Annotated Screenshot (Satty)" { spawn-sh "~/.config/niri/scripts/screenshot-annotate.sh"; }
 
     // ─── Emergency Escape Key ───
     // Use this when a fullscreen app blocks your keybinds.
