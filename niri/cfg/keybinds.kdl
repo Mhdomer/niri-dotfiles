@@ -17,7 +17,7 @@ binds {
     Mod+V                              hotkey-overlay-title="Clipboard History (Clipper)" { spawn-sh "qs -c noctalia-shell ipc call plugin:clipper togglePanel"; }
     Mod+W                              hotkey-overlay-title="Toggle Wallpaper" {spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }            
     Mod+S                              hotkey-overlay-title="Open Noctila Settings" {spawn-sh "qs -c noctalia-shell ipc call settings toggle"; }
-    Mod+M                              hotkey-overlay-title="Music (Spotify)" { spawn "spotify"; }
+    Mod+M                              hotkey-overlay-title="Spotify (Play/Pause)" { spawn-sh "~/.config/niri/scripts/spotify-toggle.sh"; }
     Mod+E                              hotkey-overlay-title="File Manager: Nautilus" { spawn "dolphin"; }
     Mod+O                              hotkey-overlay-title="Obsidian" {spawn "obsidian"; }
     Mod+H                              hotkey-overlay-title="Discord" {spawn "discord";}
