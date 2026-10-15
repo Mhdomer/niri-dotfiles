@@ -21,3 +21,10 @@
         match app-id="^org.telegram.desktop$" title="^Media viewer$"
         open-fullscreen false
     }
+
+    window-rule {
+        match app-id=r#"^com\.github\.hluk\.copyq$"#
+        open-floating true
+        default-column-width { fixed 420; }
+        default-window-height { fixed 600; }
+    }
