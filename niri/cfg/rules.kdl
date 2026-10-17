@@ -18,6 +18,11 @@
     }
 
     window-rule {
+        match app-id="kitty" is-focused=false
+        opacity 0.70
+    }
+
+    window-rule {
         match app-id="^org.telegram.desktop$" title="^Media viewer$"
         open-fullscreen false
     }
