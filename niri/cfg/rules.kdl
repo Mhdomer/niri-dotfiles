@@ -18,7 +18,7 @@
     }
 
     window-rule {
-        match is-focused=false
+        match app-id="kitty" is-focused=false
         opacity 0.82
     }
 
