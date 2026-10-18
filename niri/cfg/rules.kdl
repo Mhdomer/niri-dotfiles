@@ -33,3 +33,8 @@
         default-column-width { fixed 420; }
         default-window-height { fixed 600; }
     }
+
+    window-rule {
+        match app-id=r#"^org\.kde\.polkit"#
+        open-floating true
+    }
