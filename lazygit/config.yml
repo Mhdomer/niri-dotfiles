@@ -1,0 +1,67 @@
+gui:
+  authorColors: {}
+  branchColors: {}
+  scrollHeight: 2
+  scrollPastBottom: true
+  mouseEvents: true
+  nerdFontsVersion: "3"
+  skipDiscardChangeWarning: false
+  skipStashWarning: false
+  sidePanelWidth: 0.3333
+  expandFocusedSidePanel: false
+  mainPanelSplitMode: flexible
+  language: auto
+  timeFormat: 02 Jan 06 15:04 MST
+  commitLength:
+    show: true
+  skipNoStagedFilesWarning: false
+  showListFooter: true
+  showFileTree: true
+  showRandomTip: true
+  showCommandLog: true
+  showBottomLine: true
+  commandLogSize: 8
+  splitDiff: auto
+git:
+  commit:
+    signOff: false
+  merging:
+    manualCommit: false
+    args: ""
+  skipHookPrefix: WIP
+  autoFetch: true
+  autoRefresh: true
+  branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --
+  overrideGpg: false
+  disableForcePushing: false
+  commitPrefixes: {}
+  parseEmoji: false
+  log:
+    order: topo-order
+    showGraph: "always"
+    showWholeGraph: false
+  allBranchesLogCmds:
+    - git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium
+update:
+  method: prompt
+  days: 14
+refresher:
+  refreshInterval: 10
+  fetchInterval: 60
+confirmOnQuit: false
+quitOnTopLevelReturn: false
+keybinding:
+  universal:
+    prevItem-alt: k
+    nextItem-alt: j
+    prevBlock-alt: h
+    nextBlock-alt: l
+customCommands:
+  - key: "b"
+    command: "gh browse"
+    context: "files"
+  - key: "b"
+    command: 'gh browse "{{.SelectedLocalCommit.Sha}}"'
+    context: "commits"
+notARepository: skip
+promptToReturnFromSubprocess: true
