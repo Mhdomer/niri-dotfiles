@@ -20,6 +20,7 @@ binds {
     Mod+M                              hotkey-overlay-title="Spotify (Play/Pause)" { spawn-sh "~/.config/niri/scripts/spotify-toggle.sh"; }
     Mod+E                              hotkey-overlay-title="File Manager: Dolphin" { spawn "dolphin"; }
     Mod+O                              hotkey-overlay-title="Obsidian" { spawn "obsidian"; }
+    Mod+Shift+O                        hotkey-overlay-title="Screen OCR to Clipboard" { spawn-sh "~/.local/bin/screen-ocr.sh"; }
     Mod+H                              hotkey-overlay-title="Discord (Vesktop)" { spawn "vesktop"; }
     Mod+C hotkey-overlay-title="اذاعه القران الكريم" { spawn-sh "~/.config/niri/scripts/radio.sh"; } 
     Mod+N                              hotkey-overlay-title="Toggle Night Light (wlsunset)" { spawn-sh "~/.local/bin/toggle-nightlight.sh"; }
