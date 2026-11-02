@@ -81,7 +81,7 @@
     {
       "type": "wifi",
       "key": "│ wifi",
-      "format": "{ssid} ({signal-quality}%)"
+      "format": "{ssid} ({signal-quality})"
     },
     {
       "type": "sound",
