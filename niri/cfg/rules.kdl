@@ -53,3 +53,12 @@
         default-column-width { fixed 480; }
         default-window-height { fixed 270; }
     }
+
+    // Block sensitive apps from being captured on screen shares/streams (Discord, Meet, OBS)
+    window-rule {
+        match app-id=r#"^Bitwarden$"#
+        match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+        match app-id=r#"^org\.telegram\.desktop$"#
+        match title=r#"(?i)private|password|credential"#
+        block-out-from "screencast"
+    }
