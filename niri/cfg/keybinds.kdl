@@ -22,6 +22,8 @@ binds {
     Mod+O                              hotkey-overlay-title="Obsidian" { spawn "obsidian"; }
     Mod+H                              hotkey-overlay-title="Discord (Vesktop)" { spawn "vesktop"; }
     Mod+C hotkey-overlay-title="اذاعه القران الكريم" { spawn-sh "~/.config/niri/scripts/radio.sh"; } 
+    Mod+N                              hotkey-overlay-title="Toggle Night Light (wlsunset)" { spawn-sh "~/.local/bin/toggle-nightlight.sh"; }
+
 // ─── Media Controls ───
     XF86AudioRaiseVolume                allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }
     XF86AudioLowerVolume                allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume decrease"; }

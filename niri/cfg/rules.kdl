@@ -38,3 +38,18 @@
         match app-id=r#"^org\.kde\.polkit"#
         open-floating true
     }
+
+    window-rule {
+        match app-id="disktree"
+        open-floating true
+        default-column-width { fixed 1300; }
+        default-window-height { fixed 850; }
+    }
+
+    // Floating Picture-in-Picture for video popouts (Helium, Firefox, Zen, Chrome)
+    window-rule {
+        match title=r#"(?i)picture[- ]in[- ]picture"#
+        open-floating true
+        default-column-width { fixed 480; }
+        default-window-height { fixed 270; }
+    }
