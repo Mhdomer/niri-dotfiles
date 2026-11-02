@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# eject-hdd: Safely flush cache, unmount, spin down motor, and park heads
+# Default target: 3TB External HDD (Label: "My HDD", UUID: 16CAF00ECAEFE7C7)
+# Supports passing custom label, mount path, or block device as argument $1
+# ==============================================================================
+set -euo pipefail
+
+TARGET_INPUT="${1:-My HDD}"
+TARGET_UUID="16CAF00ECAEFE7C7"
+
+# 1. Resolve block device
+PART_DEV=""
+TARGET_NAME="$TARGET_INPUT"
+
+if [ -b "$TARGET_INPUT" ]; then
+    PART_DEV=$(readlink -f "$TARGET_INPUT")
+    TARGET_NAME=$(lsblk -no LABEL "$PART_DEV" 2>/dev/null || basename "$PART_DEV")
+elif [ -d "$TARGET_INPUT" ]; then
+    PART_DEV=$(findmnt -n -o SOURCE "$TARGET_INPUT" 2>/dev/null || true)
+    TARGET_NAME=$(basename "$TARGET_INPUT")
+elif [ -e "/dev/disk/by-uuid/$TARGET_UUID" ]; then
+    PART_DEV=$(readlink -f "/dev/disk/by-uuid/$TARGET_UUID")
+    TARGET_NAME=$(lsblk -no LABEL "$PART_DEV" 2>/dev/null || echo "My HDD")
+elif [ -e "/dev/disk/by-label/$TARGET_INPUT" ]; then
+    PART_DEV=$(readlink -f "/dev/disk/by-label/$TARGET_INPUT")
+    TARGET_NAME="$TARGET_INPUT"
+elif [ -d "/run/media/${USER:-$LOGNAME}/$TARGET_INPUT" ]; then
+    PART_DEV=$(findmnt -n -o SOURCE "/run/media/${USER:-$LOGNAME}/$TARGET_INPUT" 2>/dev/null || true)
+    TARGET_NAME="$TARGET_INPUT"
+fi
+
+# 2. Check if device was found
+if [ -z "$PART_DEV" ] || [ ! -b "$PART_DEV" ]; then
+    notify-send -u low -t 3000 -a "Drive Eject" "ℹ️ Drive Not Connected" "Drive '$TARGET_NAME' is not connected or already safely detached." 2>/dev/null || true
+    echo "ℹ️ Drive '$TARGET_NAME' is not connected or already safely detached."
+    exit 0
+fi
+
+# 3. Notify user and flush disk caches from RAM
+notify-send -u normal -t 3000 -a "Drive Eject" "💾 Syncing Write Cache..." "Flushing disk cache for '$TARGET_NAME'. Please wait..." 2>/dev/null || true
+echo "💾 Flushing filesystem buffers to '$TARGET_NAME' ($PART_DEV)..."
+sync
+
+# 4. Check if currently mounted and unmount
+MOUNT_POINT=$(findmnt -n -o TARGET "$PART_DEV" 2>/dev/null || true)
+if [ -n "$MOUNT_POINT" ]; then
+    echo "🔄 Unmounting $MOUNT_POINT..."
+    ERR_TMP=$(mktemp)
+    if ! udisksctl unmount -b "$PART_DEV" >/dev/null 2>"$ERR_TMP"; then
+        ERR_MSG=$(cat "$ERR_TMP" 2>/dev/null || echo "Filesystem is busy")
+        rm -f "$ERR_TMP"
+        notify-send -u critical -t 7000 -a "Drive Eject" "⚠️ Eject Blocked (Drive Busy)" "Could not unmount '$TARGET_NAME'.\nClose open terminals or media apps and try again." 2>/dev/null || true
+        echo "⚠️ Failed to unmount $PART_DEV: $ERR_MSG"
+        echo "Check what is using it with: lsof +D \"$MOUNT_POINT\""
+        exit 1
+    fi
+    rm -f "$ERR_TMP"
+fi
+
+# 5. Resolve parent drive (e.g. sda from sda2)
+PARENT_NAME=$(lsblk -no PKNAME "$PART_DEV" 2>/dev/null || true)
+if [ -n "$PARENT_NAME" ] && [ -b "/dev/$PARENT_NAME" ]; then
+    PARENT_DEV="/dev/$PARENT_NAME"
+else
+    PARENT_DEV="$PART_DEV"
+fi
+
+# 6. Spin down platters, park heads, and cut USB power
+echo "🛑 Powering off parent drive ($PARENT_DEV)..."
+if udisksctl power-off -b "$PARENT_DEV" >/dev/null 2>&1; then
+    notify-send -u normal -t 6000 -a "Drive Eject" "✅ Safe to Disconnect" "'$TARGET_NAME' cache flushed, heads parked, and power safely cut." 2>/dev/null || true
+    echo "✅ [Safe to Unplug] '$TARGET_NAME' heads parked and power safely cut."
+else
+    notify-send -u normal -t 6000 -a "Drive Eject" "✅ Unmounted Safely" "'$TARGET_NAME' unmounted cleanly. Safe to disconnect." 2>/dev/null || true
+    echo "✅ [Safe to Unplug] '$TARGET_NAME' unmounted cleanly."
+fi
