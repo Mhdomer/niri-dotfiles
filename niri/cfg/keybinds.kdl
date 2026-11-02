@@ -18,6 +18,10 @@ binds {
     Mod+W                              hotkey-overlay-title="Toggle Wallpaper" {spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }            
     Mod+S                              hotkey-overlay-title="Open Noctila Settings" {spawn-sh "qs -c noctalia-shell ipc call settings toggle"; }
     Mod+M                              hotkey-overlay-title="Spotify (Play/Pause)" { spawn-sh "~/.config/niri/scripts/spotify-toggle.sh"; }
+    Mod+Period                         hotkey-overlay-title="Spotify: Next Track (>)" { spawn-sh "~/.config/niri/scripts/spotify-next.sh"; }
+    Mod+Shift+Period                   hotkey-overlay-title="Spotify: Next Track (>)" { spawn-sh "~/.config/niri/scripts/spotify-next.sh"; }
+    Mod+Comma                          hotkey-overlay-title="Spotify: Previous Track (<)" { spawn-sh "~/.config/niri/scripts/spotify-prev.sh"; }
+    Mod+Shift+Comma                    hotkey-overlay-title="Spotify: Previous Track (<)" { spawn-sh "~/.config/niri/scripts/spotify-prev.sh"; }
     Mod+Shift+M                        hotkey-overlay-title="Shazam (Identify Song)" { spawn-sh "~/.local/bin/shazam-desktop.sh"; }
     Mod+E                              hotkey-overlay-title="File Manager: Dolphin" { spawn "dolphin"; }
     Mod+O                              hotkey-overlay-title="Obsidian" { spawn "obsidian"; }

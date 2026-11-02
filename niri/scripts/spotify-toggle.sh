@@ -30,11 +30,11 @@ sleep 0.15
 STATUS=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"PlaybackStatus" 2>/dev/null | awk -F '"' '/string/ {print $2}')
 
 if [ "$STATUS" = "Playing" ]; then
-    TITLE=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Metadata" 2>/dev/null | grep -A 1 "xesam:title" | awk -F '"' '/string/ {print $2}')
-    ARTIST=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Metadata" 2>/dev/null | grep -A 2 "xesam:artist" | awk -F '"' '/string/ {print $2}' | tail -n 1)
+    TITLE=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Metadata" 2>/dev/null | grep -A 1 "xesam:title" | tail -n 1 | cut -d '"' -f 2)
+    ARTIST=$(dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.freedesktop.DBus.Properties.Get string:"org.mpris.MediaPlayer2.Player" string:"Metadata" 2>/dev/null | grep -A 2 "xesam:artist" | tail -n 1 | cut -d '"' -f 2)
 
     if [ -n "$TITLE" ]; then
-        notify-send -i "spotify" "▶️ Spotify Playing" "$TITLE — $ARTIST" --expire-time=2500
+        notify-send -i "spotify" "▶️ Spotify Playing" "$TITLE ($ARTIST)" --expire-time=2500
     else
         notify-send -i "spotify" "▶️ Spotify Playing" "Resumed playback" --expire-time=2000
     fi
