@@ -16,6 +16,10 @@
 
 <img src="assets/desktop.png" alt="Desktop Showcase" width="100%" />
 
+<br/><br/>
+
+<img src="assets/fastfetch.png" alt="Fastfetch Terminal Showcase" width="100%" />
+
 </div>
 
 ---
@@ -38,7 +42,7 @@
 
 | Component | Hardware |
 | :--- | :--- |
-| **Machine** | ASUS TUF Gaming A15 |
+| **Machine** | Lenovo Legion 5 15ARH7 (82RE) |
 | **CPU** | AMD Ryzen 7 6800H (16 threads @ 4.7 GHz) |
 | **iGPU** | AMD Radeon 680M |
 | **dGPU** | NVIDIA GeForce RTX 3050 Mobile |
