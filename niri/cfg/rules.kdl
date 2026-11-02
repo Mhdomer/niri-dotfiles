@@ -62,3 +62,25 @@
         match title=r#"(?i)private|password|credential"#
         block-out-from "screencast"
     }
+
+    // Visual alert: Highlight the exact window actively being captured/screencast on stream or call
+    window-rule {
+        match is-window-cast-target=true
+        focus-ring {
+            active-color "#f38ba8"
+            inactive-color "#7d0d2d"
+        }
+        border {
+            inactive-color "#7d0d2d"
+        }
+        tab-indicator {
+            active-color "#f38ba8"
+            inactive-color "#7d0d2d"
+        }
+    }
+
+    // Browser scroll inertia damping for smoother scrolling across workspaces
+    window-rule {
+        match app-id=r#"(?i)helium|firefox|zen|chromium|brave"#
+        scroll-factor 0.9
+    }
