@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# clean: System-wide cleaner for package archives, build caches, and temp data
+# ==============================================================================
+set -euo pipefail
+
+echo "🧹 [1/6] Cleaning Pacman package archives..."
+if command -v paccache >/dev/null 2>&1; then
+    sudo paccache -rk1
+    sudo paccache -ruk0
+fi
+
+if command -v paru >/dev/null 2>&1; then
+    echo "📦 [2/6] Cleaning Paru AUR build cache..."
+    paru -Sc --noconfirm 2>/dev/null || true
+fi
+
+if command -v uv >/dev/null 2>&1; then
+    echo "🐍 [3/6] Cleaning uv Python cache..."
+    uv cache clean 2>/dev/null || true
+fi
+
+if command -v npm >/dev/null 2>&1; then
+    echo "📦 [4/6] Cleaning npm cache..."
+    npm cache clean --force 2>/dev/null || true
+fi
+
+if command -v pip >/dev/null 2>&1; then
+    echo "🐍 Cleaning pip cache..."
+    pip cache purge 2>/dev/null || true
+fi
+
+if [ -d "$HOME/.cache/spotify/Data" ]; then
+    echo "🎵 [5/6] Trimming Spotify offline stream cache..."
+    rm -rf "$HOME/.cache/spotify/Data"/* 2>/dev/null || true
+fi
+
+if command -v docker >/dev/null 2>&1 && systemctl is-active --quiet docker 2>/dev/null; then
+    echo "🐳 [6/6] Pruning unused Docker objects..."
+    docker system prune -f 2>/dev/null || true
+fi
+
+echo ""
+echo "📊 Disk Usage Summary:"
+if command -v duf >/dev/null 2>&1; then
+    duf / /mnt/data
+else
+    df -h / /mnt/data
+fi

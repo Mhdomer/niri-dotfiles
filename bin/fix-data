@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# fix-data: Clear NTFS dirty bit and mount /mnt/data safely
+# ==============================================================================
+set -euo pipefail
+
+UUID="8A7E2D037E2CEA21"
+DEV_PATH="/dev/disk/by-uuid/$UUID"
+
+if [ -e "$DEV_PATH" ]; then
+    REAL_DEV=$(readlink -f "$DEV_PATH")
+    echo "🔧 Target partition: $REAL_DEV (UUID: $UUID)"
+    echo "🧹 Clearing NTFS dirty flag with ntfsfix..."
+    sudo ntfsfix -d "$REAL_DEV"
+    echo "📂 Mounting /mnt/data..."
+    if ! sudo mount /mnt/data 2>/dev/null; then
+        sudo mount -t ntfs3 -o uid=1000,gid=1000,dmask=022,fmask=133,force,windows_names "$REAL_DEV" /mnt/data
+    fi
+    if mountpoint -q /mnt/data; then
+        echo "✅ /mnt/data mounted successfully!"
+        df -h /mnt/data
+    else
+        echo "❌ Failed to mount /mnt/data. Check dmesg or journalctl."
+    fi
+else
+    echo "❌ Drive with UUID $UUID not found. Check if NVMe drive is detected."
+fi
