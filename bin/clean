@@ -4,15 +4,15 @@
 # ==============================================================================
 set -euo pipefail
 
-echo "🧹 [1/6] Cleaning Pacman package archives..."
+echo "🧹 [1/6] Cleaning Pacman package archives (keeping latest 1)..."
 if command -v paccache >/dev/null 2>&1; then
     sudo paccache -rk1
     sudo paccache -ruk0
 fi
 
-if command -v paru >/dev/null 2>&1; then
-    echo "📦 [2/6] Cleaning Paru AUR build cache..."
-    paru -Sc --noconfirm 2>/dev/null || true
+if [ -d "$HOME/.cache/paru/clone" ] || [ -d "$HOME/.cache/paru/diff" ]; then
+    echo "📦 [2/6] Cleaning Paru AUR git build artifacts..."
+    rm -rf "$HOME/.cache/paru/clone"/* "$HOME/.cache/paru/diff"/* 2>/dev/null || true
 fi
 
 if command -v uv >/dev/null 2>&1; then
