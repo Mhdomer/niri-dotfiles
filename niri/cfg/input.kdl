@@ -9,6 +9,8 @@ input {
             layout "us,ara"
             options "grp:alt_shift_toggle"
         }
+        repeat-delay 250
+        repeat-rate 35
         numlock // Enable numlock on startup
     }
 
