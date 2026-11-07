@@ -4,3 +4,4 @@
     spawn-sh-at-startup "xwayland-satellite"
     spawn-at-startup "copyq" "--start-server"
     spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1"
+    spawn-at-startup "/home/mhdomar/.local/bin/handy" "--start-hidden"
