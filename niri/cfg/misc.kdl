@@ -25,6 +25,10 @@
 
         // Force compositor rendering onto AMD Radeon 680M iGPU to let NVIDIA RTX 3050 sleep (0W, silent fan).
         render-drm-device "/dev/dri/by-path/pci-0000:35:00.0-render"
+        ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-card"
+        ignore-drm-device "/dev/dri/by-path/pci-0000:01:00.0-render"
+        ignore-drm-device "/dev/dri/card1"
+        ignore-drm-device "/dev/dri/renderD128"
     }
 
     hotkey-overlay {
