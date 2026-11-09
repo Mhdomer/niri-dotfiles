@@ -22,6 +22,9 @@
     debug {
         // Allows notification actions and window activation from Noctalia.
         honor-xdg-activation-with-invalid-serial
+
+        // Force compositor rendering onto AMD Radeon 680M iGPU to let NVIDIA RTX 3050 sleep (0W, silent fan).
+        render-drm-device "/dev/dri/by-path/pci-0000:35:00.0-render"
     }
 
     hotkey-overlay {
