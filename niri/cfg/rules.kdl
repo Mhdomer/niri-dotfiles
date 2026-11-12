@@ -46,6 +46,13 @@
         default-window-height { fixed 850; }
     }
 
+    window-rule {
+        match app-id=r#"(?i)handy"#
+        open-floating true
+        default-column-width { fixed 750; }
+        default-window-height { fixed 600; }
+    }
+
     // Floating Picture-in-Picture for video popouts (Helium, Firefox, Zen, Chrome)
     window-rule {
         match title=r#"(?i)picture[- ]in[- ]picture"#

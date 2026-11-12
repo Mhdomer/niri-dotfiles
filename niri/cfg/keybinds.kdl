@@ -18,19 +18,19 @@ binds {
     Mod+W                              hotkey-overlay-title="Toggle Wallpaper" {spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }            
     Mod+Shift+W                        hotkey-overlay-title="Window Switcher: noctalia windows" { spawn-sh "qs -c noctalia-shell ipc call launcher windows"; }
     Mod+S                              hotkey-overlay-title="Open Noctila Settings" {spawn-sh "qs -c noctalia-shell ipc call settings toggle"; }
-    Mod+M                              hotkey-overlay-title="Spotify (Play/Pause)" { spawn-sh "~/.config/niri/scripts/spotify-toggle.sh"; }
-    Mod+Period                         hotkey-overlay-title="Spotify: Next Track (>)" { spawn-sh "~/.config/niri/scripts/spotify-next.sh"; }
-    Mod+Shift+Period                   hotkey-overlay-title="Spotify: Next Track (>)" { spawn-sh "~/.config/niri/scripts/spotify-next.sh"; }
-    Mod+Comma                          hotkey-overlay-title="Spotify: Previous Track (<)" { spawn-sh "~/.config/niri/scripts/spotify-prev.sh"; }
-    Mod+Shift+Comma                    hotkey-overlay-title="Spotify: Previous Track (<)" { spawn-sh "~/.config/niri/scripts/spotify-prev.sh"; }
-    Mod+Shift+M                        hotkey-overlay-title="Shazam (Identify Song)" { spawn-sh "~/.local/bin/shazam-desktop.sh"; }
+    Mod+M                              hotkey-overlay-title="Spotify (Play/Pause)" { spawn "/home/mhdomar/.config/niri/scripts/spotify-toggle.sh"; }
+    Mod+Period                         hotkey-overlay-title="Spotify: Next Track (>)" { spawn "/home/mhdomar/.config/niri/scripts/spotify-next.sh"; }
+    Mod+Shift+Period                   hotkey-overlay-title="Spotify: Next Track (>)" { spawn "/home/mhdomar/.config/niri/scripts/spotify-next.sh"; }
+    Mod+Comma                          hotkey-overlay-title="Spotify: Previous Track (<)" { spawn "/home/mhdomar/.config/niri/scripts/spotify-prev.sh"; }
+    Mod+Shift+Comma                    hotkey-overlay-title="Spotify: Previous Track (<)" { spawn "/home/mhdomar/.config/niri/scripts/spotify-prev.sh"; }
+    Mod+Shift+M                        hotkey-overlay-title="Shazam (Identify Song)" { spawn "/home/mhdomar/.local/bin/shazam-desktop.sh"; }
     Mod+E                              hotkey-overlay-title="File Manager: Dolphin" { spawn "dolphin"; }
     Mod+Shift+E                        hotkey-overlay-title="Emoji Picker: noctalia emoji" { spawn-sh "qs -c noctalia-shell ipc call launcher emoji"; }
     Mod+O                              hotkey-overlay-title="Obsidian" { spawn "obsidian"; }
-    Mod+Shift+O                        hotkey-overlay-title="Screen OCR to Clipboard" { spawn-sh "~/.local/bin/screen-ocr.sh"; }
+    Mod+Shift+O                        hotkey-overlay-title="Screen OCR to Clipboard" { spawn "/home/mhdomar/.local/bin/screen-ocr.sh"; }
     Mod+H                              hotkey-overlay-title="Discord (Vesktop)" { spawn "vesktop"; }
-    Mod+C hotkey-overlay-title="اذاعه القران الكريم" { spawn-sh "~/.config/niri/scripts/radio.sh"; } 
-    Mod+N                              hotkey-overlay-title="Toggle Night Light (wlsunset)" { spawn-sh "~/.local/bin/toggle-nightlight.sh"; }
+    Mod+C hotkey-overlay-title="اذاعه القران الكريم" { spawn "/home/mhdomar/.config/niri/scripts/radio.sh"; } 
+    Mod+N                              hotkey-overlay-title="Toggle Night Light (wlsunset)" { spawn "/home/mhdomar/.local/bin/toggle-nightlight.sh"; }
     Mod+A                              hotkey-overlay-title="Speech-to-Text Dictation (Handy)" { spawn "/home/mhdomar/.local/bin/handy" "--toggle-transcription"; }
 
 // ─── Media Controls ───
