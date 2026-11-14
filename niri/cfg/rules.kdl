@@ -91,3 +91,12 @@
         match app-id=r#"(?i)helium|firefox|zen|chromium|brave"#
         scroll-factor 0.9
     }
+
+    // VanishCam local preview window: floating PiP and hidden from full-screen shares
+    window-rule {
+        match title="^Vanish Cam$"
+        open-floating true
+        default-column-width { fixed 640; }
+        default-window-height { fixed 360; }
+        block-out-from "screencast"
+    }
