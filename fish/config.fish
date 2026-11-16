@@ -30,4 +30,41 @@ function y
 end
 alias yazi="y"
 
+alias vms="virsh --connect qemu:///system list --all"
+
+function _vm_ctl
+	set -l action $argv[1]
+	set -l name $argv[2]
+	set -l targets
+	switch "$name"
+		case server1 vm1 RHEL10-VM1
+			set targets RHEL10-VM1
+		case server2 vm2 RHEL10-VM2
+			set targets RHEL10-VM2
+		case all servers
+			set targets RHEL10-VM1 RHEL10-VM2
+		case '*'
+			echo "Usage: $action <server1|server2|all>"
+			return 1
+	end
+	for vm in $targets
+		virsh --connect qemu:///system $action $vm
+	end
+end
+
+function start
+	_vm_ctl start "$argv[1]"
+end
+
+function stop
+	_vm_ctl shutdown "$argv[1]"
+end
+
+function vmip
+	for vm in RHEL10-VM1 RHEL10-VM2
+		echo "=== $vm ==="
+		virsh --connect qemu:///system domifaddr $vm
+	end
+end
+
 fish_add_path /home/mhdomar/.spicetify
