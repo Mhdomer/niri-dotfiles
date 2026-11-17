@@ -18,6 +18,7 @@ binds {
     Mod+W                              hotkey-overlay-title="Toggle Wallpaper" {spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }            
     Mod+Shift+W                        hotkey-overlay-title="Window Switcher: noctalia windows" { spawn-sh "qs -c noctalia-shell ipc call launcher windows"; }
     Mod+S                              hotkey-overlay-title="Open Noctila Settings" {spawn-sh "qs -c noctalia-shell ipc call settings toggle"; }
+    Mod+I                              hotkey-overlay-title="Toggle Control Center" { spawn-sh "qs -c noctalia-shell ipc call controlCenter toggle"; }
     Mod+M                              hotkey-overlay-title="Spotify (Play/Pause)" { spawn "/home/mhdomar/.config/niri/scripts/spotify-toggle.sh"; }
     Mod+Period                         hotkey-overlay-title="Spotify: Next Track (>)" { spawn "/home/mhdomar/.config/niri/scripts/spotify-next.sh"; }
     Mod+Shift+Period                   hotkey-overlay-title="Spotify: Next Track (>)" { spawn "/home/mhdomar/.config/niri/scripts/spotify-next.sh"; }
