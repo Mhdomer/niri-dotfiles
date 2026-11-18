@@ -19,6 +19,12 @@ if [ -e "$DEV_PATH" ]; then
     if mountpoint -q /mnt/data; then
         echo "✅ /mnt/data mounted successfully!"
         df -h /mnt/data
+        if command -v niri >/dev/null 2>&1 && pgrep -x qs >/dev/null 2>&1; then
+            echo "🔄 Reloading Noctalia Shell..."
+            pkill -x qs 2>/dev/null || true
+            sleep 0.4
+            niri msg action spawn -- qs -c noctalia-shell >/dev/null 2>&1 || true
+        fi
     else
         echo "❌ Failed to mount /mnt/data. Check dmesg or journalctl."
     fi
