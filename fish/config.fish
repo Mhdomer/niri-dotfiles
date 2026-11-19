@@ -68,3 +68,7 @@ function vmip
 end
 
 fish_add_path /home/mhdomar/.spicetify
+
+
+# Added by Antigravity CLI installer
+set -gx PATH "/home/mhdomar/.local/bin" $PATH
