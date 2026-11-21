@@ -72,3 +72,5 @@ fish_add_path /home/mhdomar/.spicetify
 
 # Added by Antigravity CLI installer
 set -gx PATH "/home/mhdomar/.local/bin" $PATH
+
+string match -q "$TERM_PROGRAM" "kiro" and . (kiro --locate-shell-integration-path fish)
