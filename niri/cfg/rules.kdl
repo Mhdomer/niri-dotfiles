@@ -100,3 +100,11 @@
         default-window-height { fixed 360; }
         block-out-from "screencast"
     }
+
+    // Quick Gemini floating web app (Mod+Space)
+    window-rule {
+        match app-id=r#"^chrome-gemini\.google\.com"#
+        open-floating true
+        default-column-width { fixed 820; }
+        default-window-height { fixed 680; }
+    }

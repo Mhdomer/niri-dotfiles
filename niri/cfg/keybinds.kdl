@@ -33,6 +33,7 @@ binds {
     Mod+C hotkey-overlay-title="اذاعه القران الكريم" { spawn "/home/mhdomar/.config/niri/scripts/radio.sh"; } 
     Mod+N                              hotkey-overlay-title="Toggle Night Light (wlsunset)" { spawn "/home/mhdomar/.local/bin/toggle-nightlight.sh"; }
     Mod+A                              hotkey-overlay-title="Speech-to-Text Dictation (Handy)" { spawn "/home/mhdomar/.local/bin/handy" "--toggle-transcription"; }
+    Mod+Space                          hotkey-overlay-title="Quick Gemini Chat" { spawn "/home/mhdomar/.config/niri/scripts/gemini-quick.sh"; }
 
 // ─── Media Controls ───
     XF86AudioRaiseVolume                allow-when-locked=true { spawn-sh "qs -c noctalia-shell ipc call volume increase"; }
