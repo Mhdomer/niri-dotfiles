@@ -61,6 +61,15 @@
         default-window-height { fixed 270; }
     }
 
+    // Google Meet Document Picture-in-Picture popout (matches "Meet - ...", excludes normal browser tabs)
+    window-rule {
+        match app-id=r#"(?i)helium|chromium|brave|google-chrome"# title=r#"^Meet - "#
+        exclude title=r#"(?i) - (helium|chromium|brave|google chrome)$"#
+        open-floating true
+        default-column-width { fixed 520; }
+        default-window-height { fixed 380; }
+    }
+
     // Block sensitive apps from being captured on screen shares/streams (Discord, Meet, OBS)
     window-rule {
         match app-id=r#"^Bitwarden$"#
