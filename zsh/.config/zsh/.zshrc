@@ -17,14 +17,19 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 # History
 # =========================================================
 
+[[ -d "$XDG_STATE_HOME/zsh" ]] || mkdir -p "$XDG_STATE_HOME/zsh"
 HISTFILE="$XDG_STATE_HOME/zsh/history"
 HISTSIZE=100000
 SAVEHIST=100000
 
-setopt APPEND_HISTORY
+setopt EXTENDED_HISTORY
+setopt INC_APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_IGNORE_SPACE
+setopt HIST_SAVE_NO_DUPS
+setopt HIST_REDUCE_BLANKS
 setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
 
@@ -35,6 +40,9 @@ setopt HIST_FIND_NO_DUPS
 setopt AUTOCD
 setopt NOBEEP
 setopt NUMERIC_GLOB_SORT  # sort file10 after file9, not after file1
+setopt AUTO_PUSHD         # push old dir onto stack on cd
+setopt PUSHD_IGNORE_DUPS  # don't push duplicate directories
+setopt PUSHD_SILENT       # don't print directory stack
 
 # =========================================================
 # Smart directory navigation & lf
@@ -69,29 +77,23 @@ eval "$(zoxide init zsh)"
 # =========================================================
 # Completion (Optimized Cache)
 # =========================================================
+fpath=("$ZDOTDIR/completions" $fpath)
 autoload -Uz compinit
 
-# Ensure cache directory exists
 mkdir -p "$XDG_CACHE_HOME/zsh"
 local dump_file="$XDG_CACHE_HOME/zsh/zcompdump"
+local -a fresh_dump=( "$dump_file"(Nm-1) )
 
-# Check if the cache file is older than 24 hours (86400 seconds)
-# If it's fresh, use the -C flag to skip slow security audits
-if [[ -n "$dump_file(#qN.m-1)" ]]; then
+if (( $#fresh_dump )); then
   compinit -C -d "$dump_file"
 else
   compinit -d "$dump_file"
-  # Compile it in the background for faster loading next time
   zcompile "$dump_file"
 fi
 
-unset dump_file
+unset dump_file fresh_dump
 
-# Enable interactive completion menu selection
-zstyle ':completion:*' menu select
-
-# Make completion case-insensitive
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+source "$ZDOTDIR/completions.zsh"
 
 
 
@@ -159,6 +161,15 @@ if [ -s "$NVM_DIR/nvm.sh" ]; then
   node() { lazy_nvm "$@"; }
   npm()  { lazy_nvm "$@"; }
   npx()  { lazy_nvm "$@"; }
+fi
+
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+
+# Load third-party installer additions written to ~/.zshrc
+if [[ -z "${_HOME_ZSHRC_SOURCED:-}" && -f "$HOME/.zshrc" ]]; then
+  _HOME_ZSHRC_SOURCED=1
+  source "$HOME/.zshrc"
 fi
 
 

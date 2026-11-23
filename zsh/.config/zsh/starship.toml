@@ -7,7 +7,7 @@ format = "$username$directory$os$git_branch$git_status$nodejs$rust$golang$php $c
 
 [username]
 show_always = true
-format = "[$user](bold yellow) "
+format = "[$user](bold #9dcaff) "
 
 # ... keep the rest of your [os], [directory], and git configurations exactly the same
 
@@ -15,7 +15,7 @@ format = "[$user](bold yellow) "
 
 [os]
 disabled = false
-format = "[$symbol](#blue) "
+format = "[$symbol](blue) "
 
 [os.symbols]
 Ubuntu  = "󰕈"

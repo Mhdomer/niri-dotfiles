@@ -179,8 +179,8 @@ Ensure essential packages are installed on Arch Linux or CachyOS:
 
 ```bash
 sudo pacman -S --needed \
-    niri xwayland-satellite kitty fish starship \
-    stow fzf duf yazi zellij lazygit \
+    niri xwayland-satellite kitty zsh zsh-completions fish starship \
+    stow fzf fd ripgrep bat eza zoxide duf yazi zellij lazygit \
     grim slurp wl-clipboard tesseract tesseract-data-eng tesseract-data-ara \
     songrec wlsunset satty
 ```
@@ -196,8 +196,10 @@ git clone https://github.com/Mhdomer/niri-dotfiles.git ~/dotfiles
 From the repository directory, run `stow` targeting your home directory:
 
 ```bash
-stow -v -t ~ fish kitty niri fastfetch lazygit mpv zellij
+stow -v -t ~ zsh fish kitty niri fastfetch lazygit mpv zellij
 ```
+
+> Zsh auto-clones its 4 plugins on first launch (`plugins.zsh`). Use `prompt-switch [old|default]` to toggle between the custom single-line Starship prompt and the simpler default prompt, and run `comp-refresh` anytime to regenerate CLI completions.
 
 ### 4. Link Shell Scripts
 
