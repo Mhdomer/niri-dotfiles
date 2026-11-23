@@ -12,6 +12,11 @@ if [[ -n "$win_json" ]]; then
   win_ws=$(jq -r '.workspace_id' <<<"$win_json")
   is_focused=$(jq -r '.is_focused' <<<"$win_json")
 
+  if [[ "$is_focused" == "true" ]]; then
+    niri msg action close-window --id "$win_id" >/dev/null 2>&1 || true
+    exit 0
+  fi
+
   cur_ws_json=$(niri msg --json workspaces | jq -c '[.[] | select(.is_focused == true)] | first')
   cur_ws_id=$(jq -r '.id' <<<"$cur_ws_json")
   cur_ws_idx=$(jq -r '.idx' <<<"$cur_ws_json")
@@ -22,9 +27,7 @@ if [[ -n "$win_json" ]]; then
     niri msg action move-window-to-workspace --window-id "$win_id" --focus true "$cur_ws_idx" >/dev/null 2>&1 || true
   fi
 
-  if [[ "$is_focused" != "true" ]]; then
-    niri msg action focus-window --id "$win_id" >/dev/null 2>&1 || true
-  fi
+  niri msg action focus-window --id "$win_id" >/dev/null 2>&1 || true
   exit 0
 fi
 
