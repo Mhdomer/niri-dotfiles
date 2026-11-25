@@ -41,10 +41,12 @@ function _vm_ctl
 			set targets RHEL10-VM1
 		case server2 vm2 RHEL10-VM2
 			set targets RHEL10-VM2
+		case play server3 vm3 RHEL10-Play
+			set targets RHEL10-Play
 		case all servers
 			set targets RHEL10-VM1 RHEL10-VM2
 		case '*'
-			echo "Usage: $action <server1|server2|all>"
+			echo "Usage: $action <server1|server2|play|all>"
 			return 1
 	end
 	for vm in $targets
@@ -61,7 +63,7 @@ function stop
 end
 
 function vmip
-	for vm in RHEL10-VM1 RHEL10-VM2
+	for vm in RHEL10-VM1 RHEL10-VM2 RHEL10-Play
 		echo "=== $vm ==="
 		virsh --connect qemu:///system domifaddr $vm
 	end

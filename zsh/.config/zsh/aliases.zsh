@@ -247,11 +247,12 @@ _vm_ctl() {
   local action="$1" name="$2"
   local -a targets
   case "$name" in
-    server1|vm1|RHEL10-VM1) targets=(RHEL10-VM1) ;;
-    server2|vm2|RHEL10-VM2) targets=(RHEL10-VM2) ;;
-    all|servers)            targets=(RHEL10-VM1 RHEL10-VM2) ;;
+    server1|vm1|RHEL10-VM1)  targets=(RHEL10-VM1) ;;
+    server2|vm2|RHEL10-VM2)  targets=(RHEL10-VM2) ;;
+    play|server3|vm3|RHEL10-Play) targets=(RHEL10-Play) ;;
+    all|servers)             targets=(RHEL10-VM1 RHEL10-VM2) ;;
     *)
-      echo "Usage: ${action} <server1|server2|all>"
+      echo "Usage: ${action} <server1|server2|play|all>"
       return 1
       ;;
   esac
@@ -266,7 +267,7 @@ stop()  { _vm_ctl shutdown "${1:-}"; }
 
 vmip() {
   local vm
-  for vm in RHEL10-VM1 RHEL10-VM2; do
+  for vm in RHEL10-VM1 RHEL10-VM2 RHEL10-Play; do
     echo "=== $vm ==="
     virsh --connect qemu:///system domifaddr "$vm"
   done
